@@ -1,0 +1,118 @@
+<tal:collection_leadimage
+    define="show_leadimage view/show_leadimage|nothing;
+            target_collection view/target_collection|nothing"
+    condition="show_leadimage">
+    
+    <img tal:replace="structure view/target_collection_leadimage" />
+
+</tal:collection_leadimage>
+
+<h2 
+    tal:attributes="class string:portletHeader" 
+    tal:condition="view/show_header|nothing" 
+    tal:content="structure view/title" />
+
+<dl tal:attributes="class string:portlet portletCollection portletfeedmixer portletfeedmixerimage${view/image_position} portletfeedmixerimage${view/image_size};"
+    tal:define="is_printed_newsletter view/is_printed_newsletter|nothing;"
+    i18n:domain="collective.portlet.feedmixer">
+
+    <tal:entry
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+        tal:repeat="entry view/entries">
+        <dd class="portletItem"
+            tal:define="oddrow repeat/entry/odd;
+                        isFirst repeat/entry/start;
+                        show_summary view/show_summary|nothing;
+                        show_date view/show_date|nothing;
+                        show_event_info view/show_event_info|nothing;
+                        eventstart entry/agsci_eventstart|nothing;
+                        eventend entry/agsci_eventend|nothing;
+                        eventlocation entry/agsci_eventlocation|nothing;
+                        eventshortlocation entry/agsci_eventshortlocation|nothing;
+                        contact_info python:view.contact_info(entry);
+                        event_info python:(is_printed_newsletter and (eventstart or eventlocation or eventshortlocation or contact_info)) or False;
+    					isCanceled entry/agsci_eventcanceled|nothing;
+                        className string:portletItem;
+                        className python:isFirst and className + ' first' or className;
+                        className python:show_summary and className + ' summary' or className;
+                        className python:oddrow and className + ' odd' or className + ' even';
+                        className python:event_info and className + ' printed-event' or className;
+                        className python:isCanceled and className + ' canceled' or className;
+                        className python:show_event_info and className + ' event_summary' or className;
+                        leadimage entry/agsci_leadimage|nothing;
+                        hasImage python:(view.show_image and leadimage) or None;
+                        imageURL python:hasImage and entry.agsci_leadimage.get('url') + view.image_suffix or None;"
+            tal:attributes="class className">
+
+    
+            <div class="rssImage" tal:condition="hasImage">
+
+                <img tal:attributes="src imageURL; alt python:'';" />
+            
+            </div>
+
+            <a href=""
+               class ="title"
+               tal:attributes="href entry/link;
+                               title entry/title"><span tal:replace="structure entry/title">Title</span></a>
+
+                <div tal:condition="isCanceled" class="listingWarning"> Event Canceled </div>
+
+                <div class="portletItemDetails date"
+	                tal:condition="show_date">
+	                
+	                <tal:event tal:condition="eventstart">
+	                   <strong tal:condition="python: is_printed_newsletter or show_event_info">When:</strong> 
+	                   <span tal:replace="python:toLocalizedTime(eventstart, end_time=eventend)" />
+                    </tal:event>
+
+	                <tal:notevent condition="not:eventstart" 
+                                   content="python:toLocalizedTime(entry['updated'])" />
+
+                </div>
+
+                <tal:eventinfo 
+                     condition="show_event_info">
+
+                    <div tal:condition="python: eventlocation and not eventshortlocation" class="portletItemDetails location"><strong>Where:</strong> <span tal:replace="eventlocation" /></div>
+                    <div tal:condition="eventshortlocation" class="portletItemDetails location"><strong>Where:</strong> <span tal:replace="eventshortlocation" /></div>
+                </tal:eventinfo>
+
+                <tal:newsletter condition="is_printed_newsletter">
+
+                    <div tal:define="printed_newsletter_location eventshortlocation|eventlocation|nothing"
+                         tal:condition="python: printed_newsletter_location and not show_event_info"
+                         class="portletItemDetails location"><strong>Where:</strong> 
+                         <span tal:replace="printed_newsletter_location" /></div>
+                    
+                    <div tal:condition="contact_info" class="portletItemDetails">
+                        <strong>Contact:</strong>
+                        <span tal:replace="contact_info" />
+                    </div>
+                </tal:newsletter>
+
+                <div class="portletItemDetails summary"
+                    tal:condition="show_summary"
+                    tal:content="entry/summary_detail/value|nothing">
+                    [Feed Summary]
+                </div>
+                
+                <div class="visualClear"><!-- --></div>
+                
+        </dd>
+    </tal:entry>
+    
+    <dd class="portletFooter"
+          tal:condition="view/show_footer|nothing"
+         tal:define="more_title view/data/more_text_custom|view/title|nothing;
+                     more_text view/data/more_text|nothing">
+        <a href="#"
+            class="tile"
+            tal:attributes="href view/more_url"
+            i18n:translate="box_full_feed_view">More<span class="hiddenStructure" 
+                                                          tal:omit-tag="more_text"> <span tal:replace="more_title" /></span>&hellip;</a>
+    </dd>
+
+    <dd class="visualClear"><!-- --></dd>
+
+</dl>

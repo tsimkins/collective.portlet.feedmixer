@@ -1,0 +1,115 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# The collecive.portlet.feedmixer translation keys.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: collective.portlet.feedmixer\n"
+"POT-Creation-Date: 2008-01-10 16:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.feedmixer\n"
+
+#: ./vocabulary.py:17
+msgid "1 hour"
+msgstr ""
+
+#: ./vocabulary.py:15
+msgid "15 minutes"
+msgstr ""
+
+#: ./vocabulary.py:18
+msgid "24 hours"
+msgstr ""
+
+#: ./vocabulary.py:16
+msgid "30 minutes"
+msgstr ""
+
+#: ./vocabulary.py:14
+msgid "5 minutes"
+msgstr ""
+
+#. Default: "More"
+#: ./portlet.pt
+msgid "box_full_feed_view"
+msgstr ""
+
+#: ./interfaces.py:28
+msgid "description_cache_timeout"
+msgstr ""
+
+#: ./interfaces.py:85
+msgid "description_feeds"
+msgstr ""
+
+#: ./interfaces.py:37
+msgid "description_items_shown"
+msgstr ""
+
+#: ./interfaces.py:20
+msgid "description_title"
+msgstr ""
+
+#: ./interfaces.py:26
+msgid "heading_cache_timeout"
+msgstr ""
+
+#: ./interfaces.py:83
+msgid "heading_feeds"
+msgstr ""
+
+#: ./interfaces.py:35
+msgid "heading_items_shown"
+msgstr ""
+
+#: ./interfaces.py:18
+msgid "heading_title"
+msgstr ""
+
+#: ./interfaces.py:43
+msgid "heading_show_header"
+msgstr ""
+
+#: ./interfaces.py:45
+msgid "description_show_header"
+msgstr ""
+
+#: ./interfaces.py:51
+msgid "heading_show_date"
+msgstr ""
+
+#: ./interfaces.py:53
+msgid "description_show_date"
+msgstr ""
+
+#: ./interfaces.py:59
+msgid "heading_show_summary"
+msgstr ""
+
+#: ./interfaces.py:61
+msgid "description_show_summary"
+msgstr ""
+
+#: ./interfaces.py:67
+msgid "heading_show_image"
+msgstr ""
+
+#: ./interfaces.py:69
+msgid "description_show_image"
+msgstr ""
+
+#: ./interfaces.py:75
+msgid "heading_show_footer"
+msgstr ""
+
+#: ./interfaces.py:77
+msgid "description_show_footer"
+msgstr ""

@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+<body>
+<metal:description fill-slot="content-description">
+</metal:description>
+<metal:main fill-slot="content-core">
+
+    <div class="tileItem tileSummary tileSummaryLeadImage"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+        tal:repeat="entry view/entries">
+
+
+            <h3 class="tileHeadline">
+                <a href=""
+                   tal:content="structure entry/title"
+                   tal:attributes="href entry/link;
+                                   title entry/title">
+                        Feed Entry Title
+                </a>
+            </h3>
+
+
+        <p class="discreet">
+            <span tal:omit-tag="" i18n:translate="feed_entry_modified">
+                <span name="publication_time"
+                    tal:content="python:toLocalizedTime(entry['updated'])">
+                    Nov 1</span>
+            </span>
+        </p>
+        <div class="tileBody">
+            <p tal:content="structure entry/description|nothing">
+               This is the entry description itself
+            </p>
+        </div>
+    </div>
+
+</metal:main>
+</body>
+</html>
+
