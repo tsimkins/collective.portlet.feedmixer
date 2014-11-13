@@ -7,7 +7,6 @@ from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
 from plone.memoize.interfaces import ICacheChooser
 from urlparse import urlparse
-from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter, getUtility
 from zope.component.interfaces import ComponentLookupError
 from zope.formlib import form
@@ -17,6 +16,11 @@ import itertools
 import random
 import socket
 import time
+
+try:
+    from zope.app.component.hooks import getSite
+except ImportError:
+    from zope.component.hooks import getSite
 
 class Assignment(base.Assignment):
     """Portlet assignment.
@@ -89,10 +93,10 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-      try:
-        return bool(self.entries)
-      except:
-        return False
+        try:
+            return bool(self.entries)
+        except:
+            return False
 
     @property
     def title(self):
@@ -163,7 +167,7 @@ class Renderer(base.Renderer):
                 title = ''
 
             if field is not None:
-                if field.get_size(context) != 0:
+                if field.get(context).get_size() != 0:
                     return field.tag(context, scale=scale, css_class=css_class, title=title, alt=title)
 
             return ''
@@ -472,13 +476,19 @@ class Renderer(base.Renderer):
 
             original_header = self.request.response.getHeader('content-type')
             
+            rss_view = "RSS"
+            
             if self.random:
                 # if we have a random option checked, we need to pull the full
                 # RSS feed so we have the whole set to choose from.
-                feed = feedparser.parse(collection.fullRSS().encode("utf-8"))
-            else:
-                feed = feedparser.parse(collection.RSS().encode("utf-8"))
+                rss_view = "fullRSS"
+
+            feed_rss = collection.restrictedTraverse(rss_view)()
+
+            feed = feedparser.parse(feed_rss.encode("utf-8"))
+
             self.request.response.setHeader('Content-Type', original_header)
+
             return self.cleanFeed(feed)
 
         else:

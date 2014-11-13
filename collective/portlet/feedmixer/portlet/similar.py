@@ -10,10 +10,14 @@ from zope.interface import implements
 import feedparser
 from plone.app.portlets.portlets import base
 from Products.CMFCore.utils import getToolByName
-from zope.app.component.hooks import getSite
 from collective.portlet.feedmixer import getFields as _getFields
 from Products.ATContentTypes.interfaces.interfaces import IATContentType
 from Acquisition import aq_chain
+
+try:
+    from zope.app.component.hooks import getSite
+except ImportError:
+    from zope.component.hooks import getSite
 
 def _adjustFields(context=None, fields=None):
     remove =[
