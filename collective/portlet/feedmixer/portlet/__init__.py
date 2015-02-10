@@ -201,16 +201,19 @@ class Renderer(base.Renderer):
     @property
     def image_suffix(self):
     
-        # Special case for if this feedmixer portlet is on a tile homepage.
-        # Return the 'preview' (400px) size.
-        if hasattr(self.context, 'getLayout'):
-            if self.context.getLayout() == 'tile_homepage_view':
-                return '_preview'
-                
-        if self.image_size == 'large':
-            return '_feedmixerlarge'
+        if self.image_size == 'full':
+            return '_galleryzoom'                
         else:
-            return '_feedmixer'
+            # Special case for if this feedmixer portlet is on a tile homepage.
+            # Return the 'preview' (400px) size.
+            if hasattr(self.context, 'getLayout'):
+                if self.context.getLayout() == 'tile_homepage_view':
+                    return '_preview'
+
+            if self.image_size == 'large':
+                return '_feedmixerlarge'
+            else:
+                return '_feedmixer'
 
     @property
     def is_printed_newsletter(self):

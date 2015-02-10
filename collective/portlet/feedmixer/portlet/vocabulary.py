@@ -42,6 +42,7 @@ class ImageSizeVocabulary(object):
         return SimpleVocabulary([
             SimpleTerm('small', title=_(u"Small")),
             SimpleTerm('large', title=_(u"Large")),
+            SimpleTerm('full', title=_(u"Full Width")),
             ])
 
 ImageSizeVocabularyFactory = ImageSizeVocabulary()
