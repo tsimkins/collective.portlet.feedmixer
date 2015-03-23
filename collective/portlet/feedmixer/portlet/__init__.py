@@ -273,6 +273,11 @@ class Renderer(base.Renderer):
         else:
             return more_url
 
+    def fileinfo(self, entry):
+        if not (entry.get('agsci_ispublication', '') == 'True'):
+            return entry.get('agsci_fileinfo', None)
+        return None
+
     @property
     def feed_urls(self):
         if self.data.feeds:

@@ -47,14 +47,25 @@
     
             <div class="rssImage" tal:condition="hasImage">
 
-                <img tal:attributes="src imageURL; alt python:'';" />
+                <a class ="title"
+                   tal:attributes="href entry/link;
+                                   title entry/title">
+
+                    <img tal:attributes="src imageURL; alt python:'';" />
+
+                </a>
             
             </div>
 
-            <a href=""
-               class ="title"
+            <a class ="title"
                tal:attributes="href entry/link;
                                title entry/title"><span tal:replace="structure entry/title">Title</span></a>
+
+                <div class="portletItemDetails fileinfo"
+                    tal:define="fileinfo python:view.fileinfo(entry)"
+                    tal:condition="fileinfo"
+                    tal:content="fileinfo">
+                </div>
 
                 <div tal:condition="isCanceled" class="listingWarning"> Event Canceled </div>
 
