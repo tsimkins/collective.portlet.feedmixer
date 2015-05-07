@@ -47,8 +47,7 @@
     
             <div class="rssImage" tal:condition="hasImage">
 
-                <a class ="title"
-                   tal:attributes="href entry/link;
+                <a tal:attributes="href entry/link;
                                    title entry/title">
 
                     <img tal:attributes="src imageURL; alt python:'';" />
