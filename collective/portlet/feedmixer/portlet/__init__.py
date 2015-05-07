@@ -484,12 +484,12 @@ class Renderer(base.Renderer):
 
             original_header = self.request.response.getHeader('content-type')
             
-            rss_view = "RSS"
+            rss_view = "@@RSS"
             
             if self.random:
                 # if we have a random option checked, we need to pull the full
                 # RSS feed so we have the whole set to choose from.
-                rss_view = "fullRSS"
+                rss_view = "@@fullRSS"
 
             feed_rss = collection.restrictedTraverse(rss_view)()
 
