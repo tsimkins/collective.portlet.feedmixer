@@ -41,7 +41,8 @@
                         className python:show_event_info and className + ' event_summary' or className;
                         leadimage entry/agsci_leadimage|nothing;
                         hasImage python:(view.show_image and leadimage) or None;
-                        imageURL python:hasImage and entry.agsci_leadimage.get('url') + view.image_suffix or None;"
+                        imageURL python:hasImage and entry.agsci_leadimage.get('url') + view.image_suffix or None;
+                        imageCaption python:hasImage and entry.agsci_leadimage.get('alt') or '';"
             tal:attributes="class className">
 
     
@@ -50,7 +51,7 @@
                 <a tal:attributes="href entry/link;
                                    title entry/title">
 
-                    <img tal:attributes="src imageURL; alt python:'';" />
+                    <img tal:attributes="src imageURL; alt imageCaption;" />
 
                 </a>
             
