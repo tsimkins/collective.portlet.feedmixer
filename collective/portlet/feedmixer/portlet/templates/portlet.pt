@@ -12,14 +12,14 @@
     tal:condition="view/show_header|nothing" 
     tal:content="structure view/title" />
 
-<dl tal:attributes="class string:portlet portletCollection portletfeedmixer portletfeedmixerimage${view/image_position} portletfeedmixerimage${view/image_size};"
+<div tal:attributes="class string:portlet portletCollection portletfeedmixer portletfeedmixerimage${view/image_position} portletfeedmixerimage${view/image_size};"
     tal:define="is_printed_newsletter view/is_printed_newsletter|nothing;"
     i18n:domain="collective.portlet.feedmixer">
 
     <tal:entry
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
         tal:repeat="entry view/entries">
-        <dd class="portletItem"
+        <div class="portletItem"
             tal:define="oddrow repeat/entry/odd;
                         isFirst repeat/entry/start;
                         show_summary view/show_summary|nothing;
@@ -110,10 +110,10 @@
                 
                 <div class="visualClear"><!-- --></div>
                 
-        </dd>
+        </div>
     </tal:entry>
     
-    <dd class="portletFooter"
+    <div class="portletFooter"
           tal:condition="view/show_footer|nothing"
          tal:define="more_title view/data/more_text_custom|view/title|nothing;
                      more_text view/data/more_text|nothing">
@@ -122,8 +122,8 @@
             tal:attributes="href view/more_url"
             i18n:translate="box_full_feed_view">More<span class="hiddenStructure" 
                                                           tal:omit-tag="more_text"> <span tal:replace="more_title" /></span>&hellip;</a>
-    </dd>
+    </div>
 
-    <dd class="visualClear"><!-- --></dd>
+    <div class="visualClear"><!-- --></div>
 
-</dl>
+</div>
