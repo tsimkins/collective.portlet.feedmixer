@@ -84,6 +84,14 @@ class IFeedMixer(IPortletDataProvider):
             default=False,
             required=True)
 
+    show_text_only = schema.Bool(
+            title=_(u"heading_show_text_only",
+                default=u"Show Body Text Only"),
+            description=_(u"description_show_text_only",
+                default=u""),
+            default=False,
+            required=True)
+
     show_image = schema.Bool(
             title=_(u"heading_show_image",
                 default=u"Show Article Image"),
@@ -157,6 +165,14 @@ class IFeedMixer(IPortletDataProvider):
                 default=u"Select random items"),
             description=_(u"description_title",
                 default=u"If enabled, items will be selected randomly, rather than based on sort order"),
+            default=False,
+            required=False) 
+
+    random_order = schema.Bool(
+            title=_(u"random_order",
+                default=u"Random sort order"),
+            description=_(u"description_title",
+                default=u"If 'Select random items' is enabled, randomize the order of the random items."),
             default=False,
             required=False) 
 

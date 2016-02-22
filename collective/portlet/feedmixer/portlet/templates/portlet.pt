@@ -23,8 +23,10 @@
             tal:define="oddrow repeat/entry/odd;
                         isFirst repeat/entry/start;
                         show_summary view/show_summary|nothing;
+                        show_text_only view/show_text_only|nothing;
                         show_date view/show_date|nothing;
                         show_event_info view/show_event_info|nothing;
+                        item_text entry/content_encoded|nothing;
                         eventstart entry/agsci_eventstart|nothing;
                         eventend entry/agsci_eventend|nothing;
                         eventlocation entry/agsci_eventlocation|nothing;
@@ -57,9 +59,11 @@
             
             </div>
 
+            <tal:not_show_text condition="not: show_text_only">
+            
             <a class ="title"
-               tal:attributes="href entry/link;
-                               title entry/title"><span tal:replace="structure entry/title">Title</span></a>
+                tal:attributes="href entry/link;
+                                title entry/title"><span tal:replace="structure entry/title">Title</span></a>
 
                 <div class="portletItemDetails fileinfo"
                     tal:define="fileinfo python:view.fileinfo(entry)"
@@ -107,7 +111,11 @@
                     tal:content="entry/summary_detail/value|nothing">
                     [Feed Summary]
                 </div>
-                
+                </tal:not_show_text>
+                <tal:show_text condition="show_text_only">
+                    <div class="portletItemDetails content" tal:content="structure python:entry.content[0].get('value', '')" />
+                </tal:show_text>
+
                 <div class="visualClear"><!-- --></div>
                 
         </div>

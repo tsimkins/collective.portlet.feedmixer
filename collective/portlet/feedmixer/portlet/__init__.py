@@ -37,6 +37,7 @@ class Assignment(base.Assignment):
     show_date = False
     show_event_info = False
     show_summary = False
+    show_text_only = False
     show_image = False
     show_footer = False
     alternate_footer_link = None
@@ -47,19 +48,22 @@ class Assignment(base.Assignment):
     image_position = 'right'
     image_size = 'small'
     random = False
+    random_order = False
     show_leadimage = False
 
     def __init__(self, title=title, feeds=feeds, items_shown=items_shown,
                  show_header=show_header, show_date=show_date,
                  show_event_info=show_event_info,
                  show_summary=show_summary,
-                 show_image=show_image, show_footer=show_footer,
+                 show_image=show_image, show_text_only=show_text_only,
+                 show_footer=show_footer,
                  cache_timeout=cache_timeout,
                  alternate_footer_link=alternate_footer_link,
                  reverse_feed=reverse_feed,
                  assignment_context_path=assignment_context_path,
                  target_collection=target_collection, image_position=image_position,
-                 image_size=image_size, random=random, show_leadimage=show_leadimage,
+                 image_size=image_size, random=random, random_order=random_order,
+                 show_leadimage=show_leadimage,
                  *args, **kwargs):
 
         base.Assignment.__init__(self, *args, **kwargs)
@@ -70,6 +74,7 @@ class Assignment(base.Assignment):
         self.show_date=show_date
         self.show_event_info=show_event_info
         self.show_summary=show_summary
+        self.show_text_only = show_text_only
         self.show_image=show_image
         self.show_footer=show_footer
         self.alternate_footer_link=alternate_footer_link
@@ -80,6 +85,7 @@ class Assignment(base.Assignment):
         self.image_position = image_position
         self.image_size = image_size
         self.random = random
+        self.random_order = random_order
         self.show_leadimage = show_leadimage
 
     def Title(self):
@@ -117,6 +123,10 @@ class Renderer(base.Renderer):
     @property
     def show_summary(self):
         return self.data.show_summary
+
+    @property
+    def show_text_only(self):
+        return getattr(self.data, 'show_text_only', False)
 
     @property
     def show_image(self):
@@ -184,6 +194,13 @@ class Renderer(base.Renderer):
     def random(self):
         if self.data.random:
             return self.data.random
+        else:
+            return False
+
+    @property
+    def random_order(self):
+        if self.data.random_order:
+            return self.data.random_order
         else:
             return False
 
@@ -413,7 +430,21 @@ class Renderer(base.Renderer):
 
     @property
     def entries(self):
-        return self.memoized_entries()
+        memoized_entries = self.memoized_entries()
+
+        if self.random:
+            
+            # Pick how many samples (lesser of items shown vs. entries)
+            sample_count = sorted([self.data.items_shown, len(memoized_entries)])[0]
+            
+            indexes = random.sample(range(0,len(memoized_entries)), sample_count)
+
+            if not self.random_order:
+                indexes.sort()
+
+            return [memoized_entries[x] for x in indexes]
+ 
+        return memoized_entries
         
     @memoize
     def memoized_entries(self):
@@ -422,15 +453,10 @@ class Renderer(base.Renderer):
         if not entries:
             return []
             
-        elif len(entries) <= self.data.items_shown:
+        elif (len(entries) <= self.data.items_shown) or self.random:
             return entries
 
-        elif self.random:
-            indexes = sorted(random.sample(range(0,len(entries)), self.data.items_shown))
-            return [entries[x] for x in indexes]
-
-        else:
-            return entries[:self.data.items_shown]
+        return entries[:self.data.items_shown]
 
     @property
     def allEntries(self):
@@ -491,7 +517,7 @@ class Renderer(base.Renderer):
                 # RSS feed so we have the whole set to choose from.
                 rss_view = "@@fullRSS"
 
-            feed_rss = collection.restrictedTraverse(rss_view)()
+            feed_rss = collection.restrictedTraverse(rss_view)(full=self.show_text_only)
 
             feed = feedparser.parse(feed_rss.encode("utf-8"))
 
