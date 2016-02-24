@@ -517,7 +517,7 @@ class Renderer(base.Renderer):
                 # RSS feed so we have the whole set to choose from.
                 rss_view = "@@fullRSS"
 
-            feed_rss = collection.restrictedTraverse(rss_view)(full=self.show_text_only)
+            feed_rss = collection.restrictedTraverse(rss_view)(full=self.show_text_only, set_header=False)
 
             feed = feedparser.parse(feed_rss.encode("utf-8"))
 
