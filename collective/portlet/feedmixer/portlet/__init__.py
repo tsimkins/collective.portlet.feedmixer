@@ -17,6 +17,15 @@ import random
 import socket
 import time
 
+# Ref: http://stackoverflow.com/questions/30353531/python-rss-feedparser-cant-parse-description-correctly
+# with a minor change of 'update' to 'extend'.
+
+try:
+    feedparser._HTMLSanitizer.acceptable_elements.extend(['iframe'])
+except:
+    # Edge case, swallow all errors.
+    pass
+
 try:
     from zope.app.component.hooks import getSite
 except ImportError:
