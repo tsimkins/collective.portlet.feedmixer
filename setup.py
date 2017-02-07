@@ -29,4 +29,8 @@ setup(name='collective.portlet.feedmixer',
           "plone.app.portlets",
           "plone.memoize",
       ],
+      entry_points="""
+        [z3c.autoinclude.plugin]
+        target = plone
+      """,
       )
