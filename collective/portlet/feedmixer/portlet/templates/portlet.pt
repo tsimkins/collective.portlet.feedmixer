@@ -50,13 +50,10 @@
     
             <div class="rssImage" tal:condition="hasImage">
 
-                <a tal:attributes="href entry/link;
-                                   title entry/title">
+                <img tal:attributes="src imageURL;
+                                        alt imageCaption;
+                                        data-href entry/link" />
 
-                    <img tal:attributes="src imageURL; alt imageCaption;" />
-
-                </a>
-            
             </div>
 
             <tal:not_show_text condition="not: show_text_only">
