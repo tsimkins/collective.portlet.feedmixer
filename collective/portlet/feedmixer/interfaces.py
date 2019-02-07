@@ -84,6 +84,14 @@ class IFeedMixer(IPortletDataProvider):
             default=False,
             required=True)
 
+    show_summary_only = schema.Bool(
+            title=_(u"heading_show_summary_only",
+                default=u"Show Summary Only"),
+            description=_(u"description_show_text_only",
+                default=u"Renders HTML in the summary field."),
+            default=False,
+            required=True)
+
     show_text_only = schema.Bool(
             title=_(u"heading_show_text_only",
                 default=u"Show Body Text Only"),

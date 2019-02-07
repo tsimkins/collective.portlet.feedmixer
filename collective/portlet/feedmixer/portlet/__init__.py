@@ -46,6 +46,7 @@ class Assignment(base.Assignment):
     show_date = False
     show_event_info = False
     show_summary = False
+    show_summary_only = False
     show_text_only = False
     show_image = False
     show_footer = False
@@ -64,7 +65,9 @@ class Assignment(base.Assignment):
                  show_header=show_header, show_date=show_date,
                  show_event_info=show_event_info,
                  show_summary=show_summary,
-                 show_image=show_image, show_text_only=show_text_only,
+                 show_image=show_image,
+                 show_summary_only=show_summary_only,
+                 show_text_only=show_text_only,
                  show_footer=show_footer,
                  cache_timeout=cache_timeout,
                  alternate_footer_link=alternate_footer_link,
@@ -83,6 +86,7 @@ class Assignment(base.Assignment):
         self.show_date=show_date
         self.show_event_info=show_event_info
         self.show_summary=show_summary
+        self.show_summary_only = show_summary_only
         self.show_text_only = show_text_only
         self.show_image=show_image
         self.show_footer=show_footer
@@ -132,6 +136,14 @@ class Renderer(base.Renderer):
     @property
     def show_summary(self):
         return self.data.show_summary
+
+    @property
+    def standard_rss_feed(self):
+        return not (self.show_summary_only or self.show_text_only)
+
+    @property
+    def show_summary_only(self):
+        return getattr(self.data, 'show_summary_only', False)
 
     @property
     def show_text_only(self):

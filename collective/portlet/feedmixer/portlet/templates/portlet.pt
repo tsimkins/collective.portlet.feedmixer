@@ -23,6 +23,8 @@
             tal:define="oddrow repeat/entry/odd;
                         isFirst repeat/entry/start;
                         show_summary view/show_summary|nothing;
+                        standard_rss_feed view/standard_rss_feed|nothing;
+                        show_summary_only view/show_summary_only|nothing;
                         show_text_only view/show_text_only|nothing;
                         show_date view/show_date|nothing;
                         show_event_info view/show_event_info|nothing;
@@ -56,7 +58,7 @@
 
             </div>
 
-            <tal:not_show_text condition="not: show_text_only">
+            <tal:standard_rss_feed condition="standard_rss_feed">
             
             <a class ="title"
                 tal:attributes="href entry/link;
@@ -108,10 +110,18 @@
                     tal:content="entry/summary_detail/value|nothing">
                     [Feed Summary]
                 </div>
-                </tal:not_show_text>
-                <tal:show_text condition="show_text_only">
-                    <div class="portletItemDetails content" tal:content="structure python:entry.content[0].get('value', '')" />
-                </tal:show_text>
+
+                </tal:standard_rss_feed>
+
+                <tal:show_text_only
+                    tal:condition="show_text_only">
+                    <div class="portletItemDetails content content-text" tal:content="structure python:entry.content[0].get('value', '')" />
+                </tal:show_text_only>
+
+                <tal:show_summary_only
+                    tal:condition="show_summary_only">
+                    <div class="portletItemDetails content content-summary" tal:content="structure entry/summary_detail/value|nothing" />
+                </tal:show_summary_only>
 
                 <div class="visualClear"><!-- --></div>
                 
