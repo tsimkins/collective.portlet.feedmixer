@@ -167,7 +167,7 @@ class Renderer(base.Renderer):
         if self.target_collection:
 
             site = getSite()
-            
+
             t = self.target_collection
 
             if t.startswith('/'):
@@ -185,13 +185,13 @@ class Renderer(base.Renderer):
         context = self.target_collection_obj
 
         # shamelessly copied from Products.agCommon.browser.views.FolderView.tag
-        
+
         if context:
-        
+
             context = aq_inner(context)
-    
+
             (field, titlef) = getImageAndCaptionFields(context)
-    
+
             if titlef is not None:
                 title = titlef.get(context)
             else:
@@ -238,15 +238,20 @@ class Renderer(base.Renderer):
 
     @property
     def image_suffix(self):
-    
+
         if self.image_size == 'full':
-            return '_galleryzoom'                
+            return '_galleryzoom'
         else:
             # Special case for if this feedmixer portlet is on a tile homepage.
             # Return the 'preview' (400px) size.
+            layout = None
+            homepage_portlet_format = getattr(self.context, 'homepage_portlet_format', None)
+
             if hasattr(self.context, 'getLayout'):
-                if self.context.getLayout() == 'tile_homepage_view':
-                    return '_preview'
+                layout = self.context.getLayout()
+
+            if layout == 'tile_homepage_view' or homepage_portlet_format == 'tile':
+                return '_preview'
 
             if self.image_size == 'large':
                 return '_feedmixerlarge'
@@ -377,7 +382,7 @@ class Renderer(base.Renderer):
         except ComponentLookupError:
             isAnon = False
 
-        # If we're a collection, and don't have psu.edu in the URL, or are not 
+        # If we're a collection, and don't have psu.edu in the URL, or are not
         # anonymous, run the query
 
         if collection:
@@ -386,7 +391,7 @@ class Renderer(base.Renderer):
                 live_site = urlparse(self.collection().absolute_url()).hostname.endswith('psu.edu')
             except:
                 live_site = False
-            
+
             if not live_site or not isAnon:
                 return self.collection_feed()
 
@@ -454,26 +459,26 @@ class Renderer(base.Renderer):
         memoized_entries = self.memoized_entries()
 
         if self.random:
-            
+
             # Pick how many samples (lesser of items shown vs. entries)
             sample_count = sorted([self.data.items_shown, len(memoized_entries)])[0]
-            
+
             indexes = random.sample(range(0,len(memoized_entries)), sample_count)
 
             if not self.random_order:
                 indexes.sort()
 
             return [memoized_entries[x] for x in indexes]
- 
+
         return memoized_entries
-        
+
     @memoize
     def memoized_entries(self):
         entries = self.allEntries
 
         if not entries:
             return []
-            
+
         elif (len(entries) <= self.data.items_shown) or self.random:
             return entries
 
@@ -530,9 +535,9 @@ class Renderer(base.Renderer):
             # the browser is trying to parse it as XML.
 
             original_header = self.request.response.getHeader('content-type')
-            
+
             rss_view = "@@RSS"
-            
+
             if self.random:
                 # if we have a random option checked, we need to pull the full
                 # RSS feed so we have the whole set to choose from.
@@ -553,7 +558,7 @@ class Renderer(base.Renderer):
     def portlet_hash(self):
         return self.__portlet_metadata__.get('hash', '')
 
-    @property    
+    @property
     def context_path(self):
         return '/'.join(self.context.getPhysicalPath())
 
