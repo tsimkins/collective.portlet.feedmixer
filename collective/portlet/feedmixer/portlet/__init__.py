@@ -17,6 +17,19 @@ import random
 import socket
 import time
 
+# Ref: https://stackoverflow.com/questions/28282797/feedparser-parse-ssl-certificate-verify-failed
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    # Legacy Python that doesn't verify HTTPS certificates by default
+    pass
+else:
+    # Handle target environment that doesn't support HTTPS verification
+    ssl._create_default_https_context = _create_unverified_https_context
+
+
 # Ref: http://stackoverflow.com/questions/30353531/python-rss-feedparser-cant-parse-description-correctly
 # with a minor change of 'update' to 'extend'.
 
